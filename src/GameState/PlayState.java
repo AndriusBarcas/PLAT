@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.awt.Font;
+import java.util.Random;
+
 
 
 
@@ -23,6 +25,8 @@ public class PlayState extends GameState {
 	
 	// tilemap
 	private zaidejas zaidejas;
+	private zaidejas t;
+//	private zaidejas b;
 	
 	private BufferedImage hudbg;
 	
@@ -45,7 +49,9 @@ public class PlayState extends GameState {
 	
 	private int z = 0; 
 	
+	private int suma;
 	
+	Random generator = new Random();
 	
 		
 
@@ -83,6 +89,11 @@ public class PlayState extends GameState {
 		
 		populatezaidejai();
 		
+		for(zaidejas i : zaidejai) {
+			int roll = generator.nextInt(8) + 10;
+			i.setEjimai(roll);
+		}
+		
         zaidejas = zaidejai.get(0);
 				
 		// set up camera position
@@ -103,7 +114,7 @@ private void populatezaidejai(){
 	zaidejas Zaidejas;
 	
 	Zaidejas = new zaidejas(tileMap);
-	Zaidejas.setTilePosition(10, 18);
+	Zaidejas.setTilePosition(3, 1);
 	zaidejai.add(Zaidejas);
 	
 	Zaidejas = new zaidejas(tileMap);
@@ -111,7 +122,7 @@ private void populatezaidejai(){
 	zaidejai.add(Zaidejas);
 	
 	Zaidejas = new zaidejas(tileMap);
-	Zaidejas.setTilePosition(18, 3);
+	Zaidejas.setTilePosition(1, 3);
 	zaidejai.add(Zaidejas);
 	
 		
@@ -123,7 +134,13 @@ private void populateEnemies(){
 	enemy = new Enemy(tileMap);
 	enemy.setType(Enemy.WOLF);
 	//Initialize wolf
-	enemy.setTilePosition(10, 10);
+	enemy.setTilePosition(5, 10);
+	Priesai.add(enemy);
+	
+	enemy = new Enemy(tileMap);
+	enemy.setType(Enemy.FIRE);
+	//Initialize wolf
+	enemy.setTilePosition(10, 16);
 	Priesai.add(enemy);
 }
 	
@@ -132,25 +149,130 @@ private void populateItems() {
 		Daiktai daiktai;
 		
 		daiktai = new Daiktai(tileMap);
-		daiktai.setType(Daiktai.AXE);
-		daiktai.setTilePosition(18, 10);
+		daiktai.setType(Daiktai.BOOTS);
+		daiktai.setTilePosition(8, 10);
 		Irankiai.add(daiktai);
 		
 		daiktai = new Daiktai(tileMap);
-		daiktai.setType(Daiktai.BOW);
-		daiktai.setTilePosition(8, 2);
+		daiktai.setType(Daiktai.POTION);
+		daiktai.setTilePosition(12, 4);
+		Irankiai.add(daiktai);
+		
+		daiktai = new Daiktai(tileMap);
+		daiktai.setType(Daiktai.WINGS);
+		daiktai.setTilePosition(12, 17);
+		Irankiai.add(daiktai);
+		
+		daiktai = new Daiktai(tileMap);
+		daiktai.setType(Daiktai.CROWN);
+		daiktai.setTilePosition(3, 3);
 		Irankiai.add(daiktai);
 		
 	}
-	
+
+public int objectup(){
+	int o = 0;
+    t = zaidejas;
+	for(zaidejas i : zaidejai) {
+		if (i.getCol() == t.getCol() && i.getRow() + 1 == t.getRow()){
+			o = 1; 
+		}
+	}
+	for(Enemy e : Priesai) {
+		if (e.getx() == t.getx() && e.gety() + 30 == t.gety()){
+			o = 2; 	
+		}
+	}
+	return o;
+	}
+
+public int objectdown(){
+	int o = 0;
+	 t = zaidejas;
+	for(zaidejas i : zaidejai) {
+		if (i.getCol() == t.getCol() && i.getRow() - 1 == t.getRow()){
+			o = 1; 
+		}
+	}
+	for(Enemy e : Priesai) {
+		if (e.getx() == t.getx() && e.gety() - 30 == t.gety()){
+			o = 2; 	
+		}
+	}
+	return o;
+	}	
+
+public int objectleft(){
+	int o = 0;
+	 t = zaidejas;
+	for(zaidejas i : zaidejai) {
+		if (i.getx() + 30 == t.getx() && i.getRow()== t.getRow()){
+			o = 1; 
+		}
+	}
+	for(Enemy e : Priesai) {
+		if (e.getx() + 30 == t.getx() && e.gety()== t.gety()){
+			o = 2; 	
+		}
+	}
+	return o;
+	}
+
+public int objectright(){
+	int o = 0;
+	 t = zaidejas;
+	for(zaidejas i : zaidejai) {
+		if (i.getCol() - 1 == t.getCol() && i.getRow()== t.getRow()){
+			o = 1; 
+		}
+	}
+	for(Enemy e : Priesai) {
+		if (e.getx() - 30 == t.getx() && e.gety()== t.gety()){
+			o = 2; 	
+		}
+	}
+	return o;
+	}
+
 	
 	public void update() {
 		
+		suma = 0;
 		// check keys
 		handleInput();
 		
-
+		for(zaidejas i: zaidejai){
+			suma += i.getEjimai();
+		}
 		
+		int p = z;
+		if (objectleft() == 2 || objectright() == 2 || objectup() == 2 || objectdown() == 2){
+			zaidejas.setEjimai(0);	
+		}else{
+			for(Enemy e : Priesai) {
+				if (e.getx() - 30 == t.getx() && e.gety() - 30== t.gety()){
+					zaidejas.setEjimai(0);	
+				}
+			}
+			for(Enemy e : Priesai) {
+				if (e.getx() - 30 == t.getx() && e.gety() + 30== t.gety()){
+					zaidejas.setEjimai(0);	
+				}
+			}
+			for(Enemy e : Priesai) {
+				if (e.getx() + 30 == t.getx() && e.gety() - 30== t.gety()){
+					zaidejas.setEjimai(0);	
+				}
+			}
+			for(Enemy e : Priesai) {
+				if (e.getx() + 30 == t.getx() && e.gety() + 30== t.gety()){
+					zaidejas.setEjimai(0);	
+				}
+			}
+		}
+		
+		if (suma == 0)
+			gsm.setState(GameStateManager.GAMEOVER);
 		// update camera
 
 		//int oldxs = xsector;
@@ -167,6 +289,9 @@ private void populateItems() {
 			i.update();
 		}
 		
+		for(Enemy i : Priesai) {
+			i.update();
+		}
 	
 	// update items
 			for(int i = 0; i < Irankiai.size(); i++) {
@@ -174,7 +299,7 @@ private void populateItems() {
 				if(zaidejas.intersects(daiktai)) {
 					Irankiai.remove(i);
 					i--;
-					daiktai.collected(zaidejas);
+					daiktai.collected(gsm, zaidejas);
 				}
 			}
 }
@@ -201,7 +326,9 @@ private void populateItems() {
 			g.drawString(a, 725, 25+i*25);
 			g.drawString("moves left.", 750, 25+i*25);
 		}
-		
+		g.drawString("Help:",620, 550);
+		g.drawString("Swap Character:   K",620, 580);
+
 		// draw transition boxes
 		g.setColor(java.awt.Color.BLACK);
 		for(int i = 0; i < boxes.size(); i++) {
@@ -216,7 +343,9 @@ private void populateItems() {
 		for(Enemy i : Priesai) {
 			i.draw(g);
 		}
-		
+		for(Enemy i : Priesai) {
+			i.enemymove();
+		}
 	}
 
 	@Override
@@ -229,19 +358,22 @@ private void populateItems() {
 				z++;
 			}
 			else {
-				z = 0;
+				z = 1;
 			}
+
 		}
-		if(Keys.isPressed(Keys.r)){
-			
-			for(zaidejas i : zaidejai) {
-				i.reset();
-			}
+		if(Keys.isPressed(Keys.LEFT)&& objectleft() == 0){
+			zaidejas.setLeft();
 		}
-		if(Keys.isPressed(Keys.LEFT))zaidejas.setLeft();
-		if(Keys.isPressed(Keys.RIGHT))zaidejas.setRight();
-		if(Keys.isPressed(Keys.UP))zaidejas.setUp();
-		if(Keys.isPressed(Keys.DOWN))zaidejas.setDown();
+		if(Keys.isPressed(Keys.RIGHT)&& objectright() == 0){
+			zaidejas.setRight();
+		}
+		if(Keys.isPressed(Keys.UP)&& objectup() == 0){
+			zaidejas.setUp();
+		}
+		if(Keys.isPressed(Keys.DOWN)&& objectdown() == 0){
+			zaidejas.setDown();
+		}
 
 
 		
