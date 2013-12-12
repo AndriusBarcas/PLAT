@@ -21,11 +21,9 @@ public class zaidejas extends Entity {
 	private final int LEFT = 1;
 	private final int RIGHT = 2;
 	private final int UP = 3;
-
-	private int ejimai = 0 ;
 	
-	private boolean hasBow;
-	private boolean hasAxe;
+	private int ejimai;
+	
 
 	
 
@@ -35,10 +33,10 @@ public zaidejas(TileMap tm) {
 			
 	width = 30;
 	height = 30;
-	cwidth = 30;
-	cheight = 30;
+	cwidth = 24;
+	cheight = 24;
 	
-	moveSpeed = 2;
+	moveSpeed = 4;
 	
 	downSprites = Content.zaidejas[0];
 	leftSprites = Content.zaidejas[1];
@@ -54,33 +52,29 @@ private void setAnimation(int i, BufferedImage[] bi, int d) {
 	animation.setFrames(bi);
 	animation.setDelay(d);
 }
-public void gotBow() { hasBow = true; }
-public void gotAxe() { hasAxe = true; }
-public boolean hasBow() { return hasBow; }
-public boolean hasAxe() { return hasAxe; }
-public int getEjimai() { return maxejimai - ejimai; }
+
+public int getEjimai() { return ejimai; }
 
 
 //Keyboard input. Moves the player.
 	public void setDown() {
-			super.setDown();
+			super.setDown(ejimai);
 			ejimai = super.ejimai;
 	}
 	public void setLeft() {
-			super.setLeft();
+			super.setLeft(ejimai);
 			ejimai = super.ejimai;
 	}
 	public void setRight() {
-			super.setRight();
+			super.setRight(ejimai);
 			ejimai = super.ejimai;
 	}
 	public void setUp() {
-			super.setUp();
+			super.setUp(ejimai);
 			ejimai = super.ejimai;
 	}
 
 	public void setAction() {
-		if(hasAxe) {
 			if(currentAnimation == UP && tileMap.getIndex(rowTile - 1, colTile) == 21) {
 				tileMap.setTile(rowTile - 1, colTile, 1);
 			//	JukeBox.play("tilechange");
@@ -98,7 +92,6 @@ public int getEjimai() { return maxejimai - ejimai; }
 		//		JukeBox.play("tilechange");
 			}
 		}
-	}
 	
 public void update() {
 		
@@ -126,9 +119,12 @@ public void update() {
 		super.draw(g);
 	}
 	
-	public void reset(){
-		super.reset(); 
-		ejimai = super.ejimai;
+	public void setEjimai(int nr){
+		this.ejimai = nr;
+	}
+	
+	public void addEjimai(int sk){
+		this.ejimai += sk;
 	}
 	
 }
