@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import GameState.MenuState;
 import GameState.PlayState;
 import GameState.GameState;
+import GameState.EndState;
+import GameState.GameOverState;
 
 //import GameState.PauseState;
 
@@ -21,9 +23,11 @@ public class GameStateManager {
 	private int currentState;
 	private int previousState;
 	
-	public static final int NUM_STATES = 2;
+	public static final int NUM_STATES = 4;
 	public static final int MENU = 0;
 	public static final int PLAY = 1;
+	public static final int GAMEOVER = 2;
+	public static final int END = 3;
 	
 	
 	public GameStateManager() {
@@ -39,8 +43,16 @@ public class GameStateManager {
 			gameStates[i] = new MenuState(this);
 			gameStates[i].init();
 		}
-		else if(i == PLAY) {
+		if(i == PLAY) {
 			gameStates[i] =  new PlayState(this);
+			gameStates[i].init();
+		}
+		if(i == GAMEOVER){
+			gameStates[i] = new GameOverState(this);
+			gameStates[i].init();
+		}
+		if(i == END) {
+			gameStates[i] = new EndState(this);
 			gameStates[i].init();
 		}
 	}
