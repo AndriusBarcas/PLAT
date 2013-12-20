@@ -11,7 +11,6 @@ public class Enemy extends Entity {
 	private BufferedImage sprite;
 	private int type;
 	public static final int WOLF = 0;
-	public static final int FIRE = 0;
 	int move = 10;
 	
 	public Enemy(TileMap tm){
@@ -25,15 +24,12 @@ public class Enemy extends Entity {
 	public void setType(int i) {
 		type = i;
 		if(type == WOLF) {
-			sprite = Content.ENEMY[1][0];
+			sprite = Content.ENEMY[0][0];
 		}
-		if(type == FIRE) {
-			sprite = Content.FIRE[0][0];
-		}
-		
 	}
 	
 	public void enemymove(){
+		wolfmove();
 		if (type == WOLF) wolfmove();	
 			}
 	
