@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.awt.Font;
+import java.util.Random;
+
 
 
 
@@ -23,6 +25,8 @@ public class PlayState extends GameState {
 	
 	// tilemap
 	private zaidejas zaidejas;
+	private zaidejas t;
+//	private zaidejas b;
 	
 	private BufferedImage hudbg;
 	
@@ -43,9 +47,16 @@ public class PlayState extends GameState {
 	private int ysector;
 	private int sectorSize; 
 	
-	private int z = 0; 
+	private int lygis = 1;
 	
+	private int z = 1; 
 	
+	private int suma;
+	private int ejimai1;
+	private int ejimai2;
+	private int ejimai3;
+	
+	Random generator = new Random();
 	
 		
 
@@ -71,20 +82,45 @@ public class PlayState extends GameState {
 		Priesai = new ArrayList<Enemy>();
 		
 		// load map
+		if (lygis == 1){
 		tileMap = new TileMap(30);
 		tileMap.loadTiles("/Tilesets/tileset2.gif");
-		tileMap.loadMap("/Maps/testmap.map");
-			
+		tileMap.loadMap("/Maps/lygis1.map");
+		}
+		
+		if (lygis == 2){
+		tileMap = new TileMap(30);
+		tileMap.loadTiles("/Tilesets/tileset2.gif");
+		tileMap.loadMap("/Maps/Lygis_2.map");
+		}
+		
+		if (lygis == 3){
+			tileMap = new TileMap(30);
+			tileMap.loadTiles("/Tilesets/tileset2.gif");
+			tileMap.loadMap("/Maps/Lygis_3.map");
+			}
 			
 		// fill lists	
-		populateItems();
+		populateItems(lygis);
 		
-		populateEnemies();
+		populateEnemies(lygis);
 		
 		populatezaidejai();
 		
+		if (lygis == 1){
+		for(zaidejas i : zaidejai) {
+			int roll = generator.nextInt(8) + 10;
+			i.setEjimai(roll);
+		}
+		}
+		else{
+			zaidejai.get(0).setEjimai(ejimai1);
+			zaidejai.get(1).setEjimai(ejimai2);
+			zaidejai.get(2).setEjimai(ejimai3);
+		}
+		
         zaidejas = zaidejai.get(0);
-				
+		
 		// set up camera position
 		sectorSize = ZaidimoPanele.WIDTH;
 		xsector = zaidejas.getx() / sectorSize;
@@ -103,54 +139,293 @@ private void populatezaidejai(){
 	zaidejas Zaidejas;
 	
 	Zaidejas = new zaidejas(tileMap);
-	Zaidejas.setTilePosition(10, 18);
+	Zaidejas.setTilePosition(1, 1);
 	zaidejai.add(Zaidejas);
 	
 	Zaidejas = new zaidejas(tileMap);
-	Zaidejas.setTilePosition(2, 2);
+	Zaidejas.setTilePosition(1, 2);
 	zaidejai.add(Zaidejas);
 	
 	Zaidejas = new zaidejas(tileMap);
-	Zaidejas.setTilePosition(18, 3);
+	Zaidejas.setTilePosition(1, 3);
 	zaidejai.add(Zaidejas);
 	
 		
 	}
-private void populateEnemies(){
+
+private void populateEnemies(int lygis){
 	
 	Enemy enemy;
-	
-	enemy = new Enemy(tileMap);
-	enemy.setType(Enemy.WOLF);
-	//Initialize wolf
-	enemy.setTilePosition(10, 10);
-	Priesai.add(enemy);
+	if (lygis == 1){
+		enemy = new Enemy(tileMap);
+		enemy.setType(Enemy.WOLF);
+		enemy.setTilePosition(5, 10);
+		Priesai.add(enemy);
+		enemy = new Enemy(tileMap);
+		enemy.setType(Enemy.WOLF);
+		enemy.setTilePosition(15, 7);
+		Priesai.add(enemy);
+	}
+	if (lygis == 2){
+		enemy = new Enemy(tileMap);
+		enemy.setType(Enemy.WOLF);
+		enemy.setTilePosition(5, 2);
+		Priesai.add(enemy);
+		enemy = new Enemy(tileMap);
+		enemy.setType(Enemy.WOLF);
+		enemy.setTilePosition(16, 13);
+		Priesai.add(enemy);
+	}
+	if (lygis == 3){
+		enemy = new Enemy(tileMap);
+		enemy.setType(Enemy.WOLF);
+		enemy.setTilePosition(10, 1);
+		Priesai.add(enemy);
+		enemy = new Enemy(tileMap);
+		enemy.setType(Enemy.WOLF);
+		enemy.setTilePosition(10, 6);
+		Priesai.add(enemy);
+		enemy = new Enemy(tileMap);
+		enemy.setType(Enemy.WOLF);
+		enemy.setTilePosition(10, 11);
+		Priesai.add(enemy);
+	}
 }
 	
-private void populateItems() {
+private void populateItems(int lygis) {
 		
 		Daiktai daiktai;
 		
+		if(lygis == 1){
 		daiktai = new Daiktai(tileMap);
-		daiktai.setType(Daiktai.AXE);
-		daiktai.setTilePosition(18, 10);
+		daiktai.setType(Daiktai.BOOTS);
+		daiktai.setTilePosition(8, 10);
 		Irankiai.add(daiktai);
 		
 		daiktai = new Daiktai(tileMap);
-		daiktai.setType(Daiktai.BOW);
-		daiktai.setTilePosition(8, 2);
+		daiktai.setType(Daiktai.POTION);
+		daiktai.setTilePosition(12, 4);
 		Irankiai.add(daiktai);
 		
+		daiktai = new Daiktai(tileMap);
+		daiktai.setType(Daiktai.POTION);
+		daiktai.setTilePosition(14, 15);
+		Irankiai.add(daiktai);
+		
+		daiktai = new Daiktai(tileMap);
+		daiktai.setType(Daiktai.BOOTS);
+		daiktai.setTilePosition(4, 4);
+		Irankiai.add(daiktai);
+		
+		daiktai = new Daiktai(tileMap);
+		daiktai.setType(Daiktai.WINGS);
+		daiktai.setTilePosition(2, 17);
+		Irankiai.add(daiktai);
+		
+		daiktai = new Daiktai(tileMap);
+		daiktai.setType(Daiktai.CROWN);
+		daiktai.setTilePosition(18, 18);
+		Irankiai.add(daiktai);
+		}
+		
+		if(lygis == 2){
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.BOOTS);
+			daiktai.setTilePosition(8, 10);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.BOOTS);
+			daiktai.setTilePosition(4, 18);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.BOOTS);
+			daiktai.setTilePosition(6, 11);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.BOOTS);
+			daiktai.setTilePosition(3,3);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.POTION);
+			daiktai.setTilePosition(12, 4);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.POTION);
+			daiktai.setTilePosition(3, 6);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.POTION);
+			daiktai.setTilePosition(12, 17);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.POTION);
+			daiktai.setTilePosition(1, 10);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.WINGS);
+			daiktai.setTilePosition(18, 10);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.POTION);
+			daiktai.setTilePosition(14, 15);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.WINGS);
+			daiktai.setTilePosition(7, 2);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.CROWN);
+			daiktai.setTilePosition(18, 18);
+			Irankiai.add(daiktai);
+		}
+		if(lygis == 3){
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.WINGS);
+			daiktai.setTilePosition(8, 3);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.POTION);
+			daiktai.setTilePosition(9, 9);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.BOOTS);
+			daiktai.setTilePosition(13,13);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.BOOTS);
+			daiktai.setTilePosition(3, 7);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.POTION);
+			daiktai.setTilePosition(2, 18);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.BOOTS);
+			daiktai.setTilePosition(7,18);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.POTION);
+			daiktai.setTilePosition(15, 5);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.BOOTS);
+			daiktai.setTilePosition(4, 15);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.POTION);
+			daiktai.setTilePosition(18, 9);
+			Irankiai.add(daiktai);
+			
+			daiktai = new Daiktai(tileMap);
+			daiktai.setType(Daiktai.CROWN);
+			daiktai.setTilePosition(18, 18);
+			Irankiai.add(daiktai);
+		}
 	}
-	
+
+public int objectup(){
+	int o = 0;
+    t = zaidejas;
+	for(zaidejas i : zaidejai) {
+		if (i.getCol() == t.getCol() && i.getRow() + 1 == t.getRow()){
+			o = 1; 
+		}
+	}
+	for(Enemy e : Priesai) {
+		if (e.getx() == t.getx() && e.gety() + 30 == t.gety()){
+			o = 2; 	
+		}
+	}
+	return o;
+	}
+
+public int objectdown(){
+	int o = 0;
+	 t = zaidejas;
+	for(zaidejas i : zaidejai) {
+		if (i.getCol() == t.getCol() && i.getRow() - 1 == t.getRow()){
+			o = 1; 
+		}
+	}
+	for(Enemy e : Priesai) {
+		if (e.getx() == t.getx() && e.gety() - 30 == t.gety()){
+			o = 2; 	
+		}
+	}
+	return o;
+	}	
+
+public int objectleft(){
+	int o = 0;
+	 t = zaidejas;
+	for(zaidejas i : zaidejai) {
+		if (i.getx() + 30 == t.getx() && i.getRow()== t.getRow()){
+			o = 1; 
+		}
+	}
+	for(Enemy e : Priesai) {
+		if (e.getx() + 30 == t.getx() && e.gety()== t.gety()){
+			o = 2; 	
+		}
+	}
+	return o;
+	}
+
+public int objectright(){
+	int o = 0;
+	 t = zaidejas;
+	for(zaidejas i : zaidejai) {
+		if (i.getCol() - 1 == t.getCol() && i.getRow()== t.getRow()){
+			o = 1; 
+		}
+	}
+	for(Enemy e : Priesai) {
+		if (e.getx() - 30 == t.getx() && e.gety()== t.gety()){
+			o = 2; 	
+		}
+	}
+	return o;
+	}
+
+public void tikrinimas(){
+	t = zaidejas;
+	for(Enemy e : Priesai) {
+		if (e.getx()  == t.getx() && e.gety() == t.gety()){
+			zaidejas.setEjimai(0);	
+		}
+	}
+}
+
 	
 	public void update() {
 		
+		suma = 0;
 		// check keys
 		handleInput();
 		
-
+		tikrinimas();
 		
+		if (suma == 0)
+			gsm.setState(GameStateManager.GAMEOVER);
 		// update camera
 
 		//int oldxs = xsector;
@@ -166,15 +441,26 @@ private void populateItems() {
 		for(zaidejas i : zaidejai) {
 			i.update();
 		}
-		
+			for(Enemy i : Priesai) {
+				i.update();
+				i.enemymove();
+			}
 	
 	// update items
+			int checka = 0;
 			for(int i = 0; i < Irankiai.size(); i++) {
 				Daiktai daiktai = Irankiai.get(i);
 				if(zaidejas.intersects(daiktai)) {
 					Irankiai.remove(i);
 					i--;
-					daiktai.collected(zaidejas);
+					checka = daiktai.collected(gsm, zaidejas, lygis);
+					if (checka != lygis){
+						ejimai1 = zaidejai.get(0).getEjimai();
+						ejimai2 = zaidejai.get(1).getEjimai();
+						ejimai3 = zaidejai.get(2).getEjimai();
+						lygis = checka;
+						init();
+					}
 				}
 			}
 }
@@ -201,7 +487,9 @@ private void populateItems() {
 			g.drawString(a, 725, 25+i*25);
 			g.drawString("moves left.", 750, 25+i*25);
 		}
-		
+		g.drawString("Help:",620, 550);
+		g.drawString("Swap Character:   K",620, 580);
+
 		// draw transition boxes
 		g.setColor(java.awt.Color.BLACK);
 		for(int i = 0; i < boxes.size(); i++) {
@@ -221,6 +509,7 @@ private void populateItems() {
 
 	@Override
 	public void handleInput() {
+		
 		// TODO Auto-generated method stub
 		if(Keys.isPressed(Keys.k)){
 			
@@ -231,17 +520,21 @@ private void populateItems() {
 			else {
 				z = 0;
 			}
+
 		}
-		if(Keys.isPressed(Keys.r)){
+		if(Keys.isPressed(Keys.LEFT)&& objectleft() == 0){
+			zaidejas.setLeft();
 			
-			for(zaidejas i : zaidejai) {
-				i.reset();
-			}
 		}
-		if(Keys.isPressed(Keys.LEFT))zaidejas.setLeft();
-		if(Keys.isPressed(Keys.RIGHT))zaidejas.setRight();
-		if(Keys.isPressed(Keys.UP))zaidejas.setUp();
-		if(Keys.isPressed(Keys.DOWN))zaidejas.setDown();
+		if(Keys.isPressed(Keys.RIGHT)&& objectright() == 0){
+			zaidejas.setRight();
+		}
+		if(Keys.isPressed(Keys.UP)&& objectup() == 0){
+			zaidejas.setUp();
+		}
+		if(Keys.isPressed(Keys.DOWN)&& objectdown() == 0){
+			zaidejas.setDown();
+		}
 
 
 		
@@ -250,3 +543,4 @@ private void populateItems() {
 
 	
 }
+
