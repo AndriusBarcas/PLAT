@@ -38,10 +38,7 @@ public abstract class Entity {
 	protected int xmap;
 	protected int ymap;
 	
-	
-	protected int ejimai = 0 ;
-	protected int maxejimai = 10 ;
-	
+	protected int ejimai;
 	
 	// animation
 		protected Animation animation;
@@ -75,25 +72,25 @@ public abstract class Entity {
 			ydest = y;
 		}
 		
-		public void setLeft() {
+		public void setLeft(int ejimai) {
 			    if(moving) return;
 			    left = true;
-			    moving = validateNextPosition();
+			    moving = validateNextPosition(ejimai);
 		}
-		public void setRight() {
+		public void setRight(int ejimai) {
 			   if(moving) return;
 			   right = true;
-			   moving = validateNextPosition();
+			   moving = validateNextPosition(ejimai);
 		}
-		public void setUp() {
+		public void setUp(int ejimai) {
 			    if(moving) return;
 			    up = true;
-			    moving = validateNextPosition();
+			    moving = validateNextPosition(ejimai);
 		}
-		public void setDown() {
+		public void setDown(int ejimai) {
 			   if(moving) return;
 			   down = true;
-			   moving = validateNextPosition();
+			   moving = validateNextPosition(ejimai);
 		}
 		
 		public boolean intersects(Entity o) {
@@ -106,47 +103,49 @@ public abstract class Entity {
 		
 		// Returns whether or not the entity can
 		// move into the next position.
-		public boolean validateNextPosition() {
+		public boolean validateNextPosition(int ejimai2) {
 			
 			if(moving) return true;
 			
 			rowTile = y / tileSize;
 			colTile = x / tileSize;
-			
+
+			ejimai = ejimai2;
 			if(left) {
-				if(colTile == 0 || tileMap.getType(rowTile, colTile - 1) == Tile.BLOCKED || ejimai == maxejimai) {
+				if(colTile == 0 || tileMap.getType(rowTile, colTile - 1) == Tile.BLOCKED || ejimai == 0) {
 					return false;
 				}
 				else {
 					xdest = x - tileSize;
-					ejimai++;
+					ejimai--;
+
 				}
 			}
 			if(right) {
-				if(colTile == tileMap.getNumCols() || tileMap.getType(rowTile, colTile + 1) == Tile.BLOCKED || ejimai == maxejimai) {
+				if(colTile == tileMap.getNumCols() || tileMap.getType(rowTile, colTile + 1) == Tile.BLOCKED || ejimai == 0) {
 					return false;
 				}
 				else {
 					xdest = x + tileSize;
-					ejimai++;
+					ejimai--;
 				}
 			}
 			if(up) {
-				if(rowTile == 0 || tileMap.getType(rowTile - 1, colTile) == Tile.BLOCKED || ejimai == maxejimai) {
+				if(rowTile == 0 || tileMap.getType(rowTile - 1, colTile) == Tile.BLOCKED || ejimai == 0) {
 					return false;
 				}
 				else {
 					ydest = y - tileSize;
-					ejimai++;
+					ejimai--;
 				}
 			}
 			if(down) {
-				if(rowTile == tileMap.getNumRows() - 1 || tileMap.getType(rowTile + 1, colTile) == Tile.BLOCKED || ejimai == maxejimai) {
+				if(rowTile == tileMap.getNumRows() - 1 || tileMap.getType(rowTile + 1, colTile) == Tile.BLOCKED || ejimai == 0) {
 					return false;
 				}
 				else {
 					ydest = y + tileSize;
-					ejimai++;
+					ejimai--;
 				}
 			}
 			
@@ -201,10 +200,6 @@ public abstract class Entity {
 				y + ymap - height / 2,
 				null
 			);
-		}
-		
-		public void reset(){
-			ejimai = 0 ;
 		}
 
 }
