@@ -54,12 +54,12 @@ public class MenuState extends GameState {
 		for(int i = 0; i < options.length; i++) {
 			if(i == currentOption) {
 				g.setColor(Color.WHITE);
-				g.drawImage(marker, 380, 130 + i * 30, null);
+				g.drawImage(marker, 340, 375 + i * 40, null);
 			}
 			else {
 				g.setColor(Color.RED);
 			}
-			g.drawString(options[i], 400, 150 + i * 30);
+			g.drawString(options[i], 375, 400 + i * 40);
 		}
 		
 	}
@@ -83,3 +83,4 @@ public class MenuState extends GameState {
 		}
 	}
 }
+
