@@ -9,17 +9,18 @@ import Manager.Content;
 
 public class Content {
 	
-	public static BufferedImage[][] MENUBG = load("/HUD/menuscreen.gif", 850, 600);
-	public static BufferedImage[][] MARKER = load("/Spraitai/diamond.gif", 16, 16);
+	public static BufferedImage[][] MENUBG = load("/HUD/menuscreen.jpg", 850, 600);
+	public static BufferedImage[][] MARKER = load("/HUD/marker.gif", 25, 25);
 	public static BufferedImage[][] HUDBG = load("/HUD/hudbg.gif", 250, 600);
+	public static BufferedImage[][] END = load("/HUD/end.jpg", 850, 600);
+	public static BufferedImage[][] GAMEOVER = load("/HUD/game_over.jpg", 850, 600);
 	
 	public static BufferedImage[][] zaidejas = load("/Spraitai/zaidejospraitai.gif", 30, 30);
 	
 	//Vilko spraitai
-	public static BufferedImage[][] ENEMY = load("/Spraitai/wolf2.gif", 30, 30);
+	public static BufferedImage[][] ENEMY = load("/Spraitai/fire.gif", 30, 30);
 	
-	public static BufferedImage[][] DAIKTAI = load("/Spraitai/items.gif", 16, 16);
-	public static BufferedImage[][] DAIKTAI2 = load("/Spraitai/items2.gif", 30, 30);
+	public static BufferedImage[][] DAIKTAI = load("/Spraitai/items.gif", 30, 30);
 	//public static BufferedImage[][] font = load("/HUD/font.gif", 8, 8);
 	
 	
